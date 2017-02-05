@@ -52,7 +52,7 @@ int i2c_write( int *fd, unsigned char *dat, unsigned char cnt )
   return 0;
 }
 
-void delay_msec( u32 msec )
+void delay_msec( int msec )
 {
 
   struct timespec ts;
@@ -64,3 +64,4 @@ void delay_msec( u32 msec )
 
   return;
 }
+

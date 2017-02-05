@@ -9,9 +9,9 @@
 #include <time.h>
 #include <sys/time.h>
 
-#include "utils.h"
-
 int i2c_open( int *fd, int bus, unsigned char dev_addr );
+int i2c_close( int *fd );
 int i2c_write( int *fd, unsigned char *dat, unsigned char cnt ) ;
 int i2c_read( int *fd, unsigned char reg, unsigned char *dat,  unsigned char cnt ) ;
-void delay_msec( u32 msec );
+void delay_msec( int msec );
+

@@ -38,10 +38,10 @@ s8 bme280_get_calib_param(struct bme280_t *p_bme280)
   u8 tmp[2];
 
   for( i = 0 ; i <  BME280_PRESSURE_TEMPERATURE_CALIB_DATA_LENGTH ; i=i+2 ){
-      status = read( dev_addr, BME280_TEMPERATURE_CALIB_DIG_T1_LSB_REG + i , tmp, step );
-      for( j = 0 ; j < step ; j++ ){
-        data[i+j] = tmp[j];
-      }
+    status = read( dev_addr, BME280_TEMPERATURE_CALIB_DIG_T1_LSB_REG + i , tmp, step );
+    for( j = 0 ; j < step ; j++ ){
+      data[i+j] = tmp[j];
+    }
   }
 
   p_bme280->cal_param.dig_T1 = BME280_CAST_TO_U16(data, 
@@ -83,13 +83,13 @@ s8 bme280_get_calib_param(struct bme280_t *p_bme280)
   p_bme280->cal_param.dig_H1 = data[BME280_HUMIDITY_CALIB_DIG_H1];
   
   status += p_bme280->bus_read(dev_addr, 
-                                           BME280_HUMIDITY_CALIB_DIG_H2_LSB_REG, 
-                                           data, 
-                                           BME280_HUMIDITY_CALIB_DATA_LENGTH);
+                               BME280_HUMIDITY_CALIB_DIG_H2_LSB_REG, 
+                               data, 
+                               BME280_HUMIDITY_CALIB_DATA_LENGTH);
 
   p_bme280->cal_param.dig_H2 = BME280_CAST_TO_S16(data, 
-                                                 BME280_HUMIDITY_CALIB_DIG_H2_MSB    , 
-                                                 BME280_HUMIDITY_CALIB_DIG_H2_LSB);
+                                                  BME280_HUMIDITY_CALIB_DIG_H2_MSB    , 
+                                                  BME280_HUMIDITY_CALIB_DIG_H2_LSB);
   p_bme280->cal_param.dig_H3 = data[BME280_HUMIDITY_CALIB_DIG_H3];
 
   p_bme280->cal_param.dig_H4 = (s16)((((s16)((s8)data[BME280_HUMIDITY_CALIB_DIG_H4_MSB])) << 
@@ -216,22 +216,6 @@ s8 bme280_set_oversamp_humidity( struct bme280_t *p_bme280, u8 mode )
   return status;
 }
 
-s8 bme280_set_standby_durn( struct bme280_t *p_bme280, u8 num )
-{
-
-  s8 status   = ERROR;
-  u8 data     = 0;
-  u8 dev_addr = p_bme280->dev_addr;
-
-  BME280_WR_FUNC = p_bme280->bus_write;
-
-  status  = bme280_get_reg_value( p_bme280, &data, BME280_CONFIG_REG, 0xF, 0 );
-  data    = BME280_SET_BITSLICE(data, BME280_CONFIG_REG_TSB, num);
-  status += write( dev_addr, BME280_CONFIG_REG_TSB__REG, &data, 1);
-
-  return status;
-}
-
 
 s8 bme280_read_uncomp_pressure( struct bme280_t *p_bme280, s32 *uncomp_pressure )
 {
@@ -310,24 +294,20 @@ s32 bme280_compensate_temperature_int32( struct bme280_t *p_bme280, s32 uncomp_t
 
 u32 bme280_compensate_pressure_int32( struct bme280_t *p_bme280, s32 uncomp_pressure)
 {
-  s32 x1 = BME280_INIT_VALUE;
-  s32 x2 = BME280_INIT_VALUE;
+  s32 x1       = BME280_INIT_VALUE;
+  s32 x2       = BME280_INIT_VALUE;
   u32 pressure = BME280_INIT_VALUE;
 
-
-  s32 t_fine = (s32)p_bme280->cal_param.t_fine;
-
-  u16 dig_P1 = p_bme280->cal_param.dig_P1;
-  s16 dig_P2 = p_bme280->cal_param.dig_P2;
-  s16 dig_P3 = p_bme280->cal_param.dig_P3;
-  s16 dig_P4 = p_bme280->cal_param.dig_P4;
-  s16 dig_P5 = p_bme280->cal_param.dig_P5;
-  s16 dig_P6 = p_bme280->cal_param.dig_P6;
-  s16 dig_P7 = p_bme280->cal_param.dig_P7;
-  s16 dig_P8 = p_bme280->cal_param.dig_P8;
-  s16 dig_P9 = p_bme280->cal_param.dig_P9;
-
-  
+  s32 t_fine  = (s32)p_bme280->cal_param.t_fine;
+  u16 dig_P1  = p_bme280->cal_param.dig_P1;
+  s16 dig_P2  = p_bme280->cal_param.dig_P2;
+  s16 dig_P3  = p_bme280->cal_param.dig_P3;
+  s16 dig_P4  = p_bme280->cal_param.dig_P4;
+  s16 dig_P5  = p_bme280->cal_param.dig_P5;
+  s16 dig_P6  = p_bme280->cal_param.dig_P6;
+  s16 dig_P7  = p_bme280->cal_param.dig_P7;
+  s16 dig_P8  = p_bme280->cal_param.dig_P8;
+  s16 dig_P9  = p_bme280->cal_param.dig_P9;
 
   x1 = (t_fine >> 1 ) - (s32)64000;
   x2 = ((( x1 >> 2 ) * ( x1 >> 2 )) >> 11 ) * ((s32)dig_P6);
@@ -373,14 +353,31 @@ u32 bme280_compensate_humidity_int32( struct bme280_t *p_bme280, s32 uncomp_humi
 
   x1 = (p_bme280->cal_param.t_fine - ((s32)76800));
   x1 = (((((uncomp_humidity << 14) - (((s32)dig_H4) << 20 ) - (((s32)dig_H5) * x1)) + ((s32)16384)) >> 15 )
-	      * (((((((x1 * ((s32)dig_H6)) >> 10) * (((x1* ((s32)dig_H3)) >> 11 ) + ((s32)32768)))
->> 10) + ((s32)2097152)) * ((s32)dig_H2) + 8192) >> 14));
+        * (((((((x1 * ((s32)dig_H6)) >> 10) * (((x1* ((s32)dig_H3)) >> 11 ) + ((s32)32768)))
+              >> 10) + ((s32)2097152)) * ((s32)dig_H2) + 8192) >> 14));
 
   x1 = (x1 - (((((x1 >> 15) * (x1 >> 15)) >> 7) * ((s32)dig_H1)) >> 4));
   x1 = (x1 < 0 ? 0 : x1 );
   x1 = (x1 > 419430400 ? 419430400 : x1);
   return (u32)(x1 >> 12);
 }
+
+s8 bme280_set_standby_durn( struct bme280_t *p_bme280, u8 num )
+{
+
+  s8 status   = ERROR;
+  u8 data     = 0;
+  u8 dev_addr = p_bme280->dev_addr;
+
+  BME280_WR_FUNC = p_bme280->bus_write;
+
+  status  = bme280_get_reg_value( p_bme280, &data, BME280_CONFIG_REG, 0xF, 0 );
+  data    = BME280_SET_BITSLICE(data, BME280_CONFIG_REG_TSB, num);
+  status += write( dev_addr, BME280_CONFIG_REG_TSB__REG, &data, 1);
+
+  return status;
+}
+
 
 s8 bme280_get_standby_durn(struct bme280_t *p_bme280, u8 *standby_durn)
 {

@@ -5,22 +5,22 @@
 //#include <linux/math64.h>
 #include <stdint.h>
 
-typedef	int8_t    s8;
-typedef	int16_t   s16;
-typedef	int32_t   s32;
-typedef	int64_t   s64;
+typedef int8_t    s8;
+typedef int16_t   s16;
+typedef int32_t   s32;
+typedef int64_t   s64;
 
-typedef	uint8_t  u8;
-typedef	uint16_t u16;
-typedef	uint32_t u32;
-typedef	uint64_t u64;
+typedef uint8_t  u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
 
 
 #define BME280_ENABLE_FLOAT
 #define BME280_ENABLE_INT64
 
 /***************************************************************/
-/**\name	COMMON USED CONSTANTS      */
+/**\name COMMON USED CONSTANTS      */
 /***************************************************************/
 /* Constants */
 #define BME280_NULL                            (0)
@@ -261,7 +261,7 @@ typedef	uint64_t u64;
 #define BME280_STAT_REG_IM_UPDATE__REG  (BME280_STAT_REG)
 /****************************************************/
 /**\name    BIT MASK, LENGTH AND POSITION DEFINITIONS
-FOR TEMPERATURE OVERSAMPLING  */
+   FOR TEMPERATURE OVERSAMPLING  */
 /***************************************************/
 /* Control Measurement Register */
 #define BME280_CTRL_MEAS_REG_OVERSAMP_TEMPERATURE__POS (5)
@@ -270,7 +270,7 @@ FOR TEMPERATURE OVERSAMPLING  */
 #define BME280_CTRL_MEAS_REG_OVERSAMP_TEMPERATURE__REG (BME280_CTRL_MEAS_REG)
 /****************************************************/
 /**\name    BIT MASK, LENGTH AND POSITION DEFINITIONS
-FOR PRESSURE OVERSAMPLING  */
+   FOR PRESSURE OVERSAMPLING  */
 /***************************************************/
 #define BME280_CTRL_MEAS_REG_OVERSAMP_PRESSURE__POS (2)
 #define BME280_CTRL_MEAS_REG_OVERSAMP_PRESSURE__MSK (0x1C)
@@ -278,7 +278,7 @@ FOR PRESSURE OVERSAMPLING  */
 #define BME280_CTRL_MEAS_REG_OVERSAMP_PRESSURE__REG (BME280_CTRL_MEAS_REG)
 /****************************************************/
 /**\name    BIT MASK, LENGTH AND POSITION DEFINITIONS
-FOR POWER MODE  */
+   FOR POWER MODE  */
 /***************************************************/
 #define BME280_CTRL_MEAS_REG_POWER_MODE__POS  (0)
 #define BME280_CTRL_MEAS_REG_POWER_MODE__MSK  (0x03)
@@ -286,7 +286,7 @@ FOR POWER MODE  */
 #define BME280_CTRL_MEAS_REG_POWER_MODE__REG  (BME280_CTRL_MEAS_REG)
 /****************************************************/
 /**\name    BIT MASK, LENGTH AND POSITION DEFINITIONS
-FOR HUMIDITY OVERSAMPLING  */
+   FOR HUMIDITY OVERSAMPLING  */
 /***************************************************/
 #define BME280_CTRL_HUMIDITY_REG_OVERSAMP_HUMIDITY__POS (0)
 #define BME280_CTRL_HUMIDITY_REG_OVERSAMP_HUMIDITY__MSK (0x07)
@@ -294,7 +294,7 @@ FOR HUMIDITY OVERSAMPLING  */
 #define BME280_CTRL_HUMIDITY_REG_OVERSAMP_HUMIDITY__REG (BME280_CTRL_HUMIDITY_REG)
 /****************************************************/
 /**\name    BIT MASK, LENGTH AND POSITION DEFINITIONS
-FOR STANDBY TIME  */
+   FOR STANDBY TIME  */
 /***************************************************/
 /* Configuration Register */
 #define BME280_CONFIG_REG_TSB__POS (5)
@@ -303,7 +303,7 @@ FOR STANDBY TIME  */
 #define BME280_CONFIG_REG_TSB__REG (BME280_CONFIG_REG)
 /****************************************************/
 /**\name    BIT MASK, LENGTH AND POSITION DEFINITIONS
-FOR FILTER */
+   FOR FILTER */
 /***************************************************/
 #define BME280_CONFIG_REG_FILTER__POS (2)
 #define BME280_CONFIG_REG_FILTER__MSK (0x1C)
@@ -311,7 +311,7 @@ FOR FILTER */
 #define BME280_CONFIG_REG_FILTER__REG (BME280_CONFIG_REG)
 /****************************************************/
 /**\name    BIT MASK, LENGTH AND POSITION DEFINITIONS
-FOR SPI ENABLE  */
+   FOR SPI ENABLE  */
 /***************************************************/
 #define BME280_CONFIG_REG_SPI3_ENABLE__POS (0)
 #define BME280_CONFIG_REG_SPI3_ENABLE__MSK (0x01)
@@ -319,7 +319,7 @@ FOR SPI ENABLE  */
 #define BME280_CONFIG_REG_SPI3_ENABLE__REG (BME280_CONFIG_REG)
 /****************************************************/
 /**\name    BIT MASK, LENGTH AND POSITION DEFINITIONS
-FOR PRESSURE AND TEMPERATURE DATA  */
+   FOR PRESSURE AND TEMPERATURE DATA  */
 /***************************************************/
 /* Data Register */
 #define BME280_PRESSURE_XLSB_REG_DATA__POS (4)
@@ -334,7 +334,7 @@ FOR PRESSURE AND TEMPERATURE DATA  */
 
 
 /****************************************************/
-/**\name	BUS READ AND WRITE FUNCTION POINTERS */
+/**\name BUS READ AND WRITE FUNCTION POINTERS */
 /***************************************************/
 #define BME280_WR_FUNC_PTR s8 (*bus_write)(u8, u8, u8 *, u8)
 #define BME280_RD_FUNC_PTR s8 (*bus_read)(u8, u8, u8 *, u8)
@@ -342,13 +342,13 @@ FOR PRESSURE AND TEMPERATURE DATA  */
 #define BME280_WR_FUNC s8 (*write)(u8, u8, u8 *, u8)
 #define BME280_RD_FUNC s8 (*read)(u8, u8, u8 *, u8)
 
-#define BME280_MDELAY_DATA_TYPE    u32
-#define	BME280_3MS_DELAY	   (3)
+#define BME280_MDELAY_DATA_TYPE    int
+#define BME280_3MS_DELAY        (3)
 #define BME280_REGISTER_READ_DELAY (1)
 
 
 /**************************************************************/
-/**\name	STRUCTURE DEFINITIONS                         */
+/**\name STRUCTURE DEFINITIONS                         */
 /**************************************************************/
 struct bme280_calibration_param_t 
 {
@@ -396,29 +396,22 @@ struct bme280_t {
 #define BME280_CAST_TO_U16(array, upper_pos, lower_pos)  (u16)((((u16)((u8)array[upper_pos])) << 8) | array[lower_pos])
 #define BME280_CAST_TO_S16(array, upper_pos, lower_pos)  (s16)((((s16)((s8)array[upper_pos])) << 8) | array[lower_pos])
 
-
-s8 bme280_get_reg_value( struct bme280_t *p_bme280, u8 *value, u8 addr, u8 msk, u8 pos );
-s8 bme280_id_read(struct bme280_t *p_bme280);
-s8 bme280_get_calib_param(struct bme280_t *p_bme280);
-s8 bme280_get_power_mode( struct bme280_t *p_bme280, u8 *power_mode );
-s8 bme280_set_power_mode( struct bme280_t *p_bme280, u8 power_mode );
-s8 bme280_set_oversamp_temperature( struct bme280_t *p_bme280, u8 mode );
-s8 bme280_set_oversamp_pressure( struct bme280_t *p_bme280, u8 mode );
-s8 bme280_set_oversamp_humidity( struct bme280_t *p_bme280, u8 mode );
-s8 bme280_set_standby_durn( struct bme280_t *p_bme280, u8 num );
-s8 bme280_read_uncomp_pressure( struct bme280_t *p_bme280, s32 *uncomp_pressure );
-s8 bme280_read_uncomp_temperature( struct bme280_t *p_bme280, s32 *uncomp_temperature);
-s8 bme280_read_uncomp_humidity( struct bme280_t *p_bme280, s32 *uncomp_humidity);
+s8  bme280_get_reg_value( struct bme280_t *p_bme280, u8 *value, u8 addr, u8 msk, u8 pos );
+s8  bme280_initialize(struct bme280_t *p_bme280);
+s8  bme280_id_read(struct bme280_t *p_bme280);
+s8  bme280_get_calib_param(struct bme280_t *p_bme280);
+s8  bme280_get_power_mode( struct bme280_t *p_bme280, u8 *power_mode );
+s8  bme280_set_power_mode( struct bme280_t *p_bme280, u8 power_mode );
+s8  bme280_set_oversamp_temperature( struct bme280_t *p_bme280, u8 mode );
+s8  bme280_set_oversamp_pressure( struct bme280_t *p_bme280, u8 mode );
+s8  bme280_set_oversamp_humidity( struct bme280_t *p_bme280, u8 mode );
+s8  bme280_set_standby_durn( struct bme280_t *p_bme280, u8 num );
+s8  bme280_read_uncomp_pressure( struct bme280_t *p_bme280, s32 *uncomp_pressure );
+s8  bme280_read_uncomp_temperature( struct bme280_t *p_bme280, s32 *uncomp_temperature);
+s8  bme280_read_uncomp_humidity( struct bme280_t *p_bme280, s32 *uncomp_humidity);
 s32 bme280_compensate_temperature_int32( struct bme280_t *p_bme280, s32 uncomp_temperature);
 u32 bme280_compensate_pressure_int32( struct bme280_t *p_bme280, s32 uncomp_pressure);
 u32 bme280_compensate_humidity_int32( struct bme280_t *p_bme280, s32 uncomp_humidity);
-s8 bme280_get_standby_durn(struct bme280_t *p_bme280, u8 *standby_durn);
-
-s8 I2C_routine(void);
-s8 BME280_I2C_bus_read(u8 dev_addr, u8 reg_addr, u8 *reg_data, u8 cnt);
-s8 BME280_I2C_bus_write(u8 dev_addr, u8 reg_addr, u8 *reg_data, u8 cnt);
-
-void BME280_delay_msek(u32 msek);
-s32  bme280_data_readout_template(void);
+s8  bme280_get_standby_durn(struct bme280_t *p_bme280, u8 *standby_durn);
 
 #endif
